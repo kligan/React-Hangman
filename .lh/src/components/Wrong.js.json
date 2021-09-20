@@ -1,0 +1,58 @@
+{
+    "sourceFile": "src/components/Wrong.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 10,
+            "patches": [
+                {
+                    "date": 1632104939746,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1632108143686,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,9 @@\n import React from \"react\";\r\n \r\n-export default function Wrong() {\r\n-  return <div></div>;\r\n+export default function Wrong({ wrongLetters }) {\r\n+  return (\r\n+    <div>\r\n+      <div>{wrongLetters.length > 0 && <p>Wrong</p>}</div>\r\n+    </div>\r\n+  );\r\n }\r\n"
+                },
+                {
+                    "date": 1632108191357,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,8 +2,13 @@\n \r\n export default function Wrong({ wrongLetters }) {\r\n   return (\r\n     <div>\r\n-      <div>{wrongLetters.length > 0 && <p>Wrong</p>}</div>\r\n+      <div>\r\n+        {wrongLetters.length > 0 && <p>Wrong</p>}\r\n+        {wrongLetters.map((letter, index) => (\r\n+          <span key={index}>{letter}</span>\r\n+        ))}\r\n+      </div>\r\n     </div>\r\n   );\r\n }\r\n"
+                },
+                {
+                    "date": 1632108271539,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,11 +4,14 @@\n   return (\r\n     <div>\r\n       <div>\r\n         {wrongLetters.length > 0 && <p>Wrong</p>}\r\n-        {wrongLetters.map((letter, index) => (\r\n-          <span key={index}>{letter}</span>\r\n-        ))}\r\n+        {wrongLetters.map((letter, index) =>\r\n+          (<span key={index}>{letter}</span>).reduce(\r\n+            (prev, curr) => (prev === null ? [curr] : [prev, \",\", curr]),\r\n+            null\r\n+          )\r\n+        )}\r\n       </div>\r\n     </div>\r\n   );\r\n }\r\n"
+                },
+                {
+                    "date": 1632108396758,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n import React from \"react\";\r\n \r\n export default function Wrong({ wrongLetters }) {\r\n   return (\r\n-    <div>\r\n+    <div className=\"wrong-letters-container\">\r\n       <div>\r\n         {wrongLetters.length > 0 && <p>Wrong</p>}\r\n         {wrongLetters.map((letter, index) =>\r\n           (<span key={index}>{letter}</span>).reduce(\r\n"
+                },
+                {
+                    "date": 1632109660420,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n     <div className=\"wrong-letters-container\">\r\n       <div>\r\n         {wrongLetters.length > 0 && <p>Wrong</p>}\r\n         {wrongLetters.map((letter, index) =>\r\n-          (<span key={index}>{letter}</span>).reduce(\r\n+          <span key={index}>{letter}</span>).reduce(\r\n             (prev, curr) => (prev === null ? [curr] : [prev, \",\", curr]),\r\n             null\r\n           )\r\n         )}\r\n"
+                },
+                {
+                    "date": 1632109690753,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,10 +6,9 @@\n       <div>\r\n         {wrongLetters.length > 0 && <p>Wrong</p>}\r\n         {wrongLetters.map((letter, index) =>\r\n           <span key={index}>{letter}</span>).reduce(\r\n-            (prev, curr) => (prev === null ? [curr] : [prev, \",\", curr]),\r\n-            null\r\n+            (prev, curr) => (prev === null ? [curr] : [prev, \",\", curr], null)\r\n           )\r\n         )}\r\n       </div>\r\n     </div>\r\n"
+                },
+                {
+                    "date": 1632109697618,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,13 +4,13 @@\n   return (\r\n     <div className=\"wrong-letters-container\">\r\n       <div>\r\n         {wrongLetters.length > 0 && <p>Wrong</p>}\r\n-        {wrongLetters.map((letter, index) =>\r\n-          <span key={index}>{letter}</span>).reduce(\r\n+        {wrongLetters\r\n+          .map((letter, index) => <span key={index}>{letter}</span>)\r\n+          .reduce(\r\n             (prev, curr) => (prev === null ? [curr] : [prev, \",\", curr], null)\r\n-          )\r\n-        )}\r\n+          )}\r\n       </div>\r\n     </div>\r\n   );\r\n }\r\n"
+                },
+                {
+                    "date": 1632109760022,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,10 +7,10 @@\n         {wrongLetters.length > 0 && <p>Wrong</p>}\r\n         {wrongLetters\r\n           .map((letter, index) => <span key={index}>{letter}</span>)\r\n           .reduce(\r\n-            (prev, curr) => (prev === null ? [curr] : [prev, \",\", curr], null)\r\n-          )}\r\n+            (prev, curr) => (prev === null ? [curr] : [prev, \",\", curr], null)}\r\n+          \r\n       </div>\r\n     </div>\r\n   );\r\n }\r\n"
+                },
+                {
+                    "date": 1632109778708,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,12 +5,13 @@\n     <div className=\"wrong-letters-container\">\r\n       <div>\r\n         {wrongLetters.length > 0 && <p>Wrong</p>}\r\n         {wrongLetters\r\n-          .map((letter, index) => <span key={index}>{letter}</span>)\r\n+          .map((letter, i) => <span key={i}>{letter}</span>)\r\n           .reduce(\r\n-            (prev, curr) => (prev === null ? [curr] : [prev, \",\", curr], null)}\r\n-          \r\n+            (prev, curr) => (prev === null ? [curr] : [prev, \", \", curr]),\r\n+            null\r\n+          )}\r\n       </div>\r\n     </div>\r\n   );\r\n }\r\n"
+                },
+                {
+                    "date": 1632109914180,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n export default function Wrong({ wrongLetters }) {\r\n   return (\r\n     <div className=\"wrong-letters-container\">\r\n       <div>\r\n-        {wrongLetters.length > 0 && <p>Wrong</p>}\r\n+        {wrongLetters.length > 0 && <p>Wrong Letters</p>}\r\n         {wrongLetters\r\n           .map((letter, i) => <span key={i}>{letter}</span>)\r\n           .reduce(\r\n             (prev, curr) => (prev === null ? [curr] : [prev, \", \", curr]),\r\n"
+                }
+            ],
+            "date": 1632104939746,
+            "name": "Commit-0",
+            "content": "import React from \"react\";\r\n\r\nexport default function Wrong() {\r\n  return <div></div>;\r\n}\r\n"
+        }
+    ]
+}

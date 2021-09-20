@@ -1,0 +1,114 @@
+{
+    "sourceFile": "src/App.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 24,
+            "patches": [
+                {
+                    "date": 1632092256116,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1632092374341,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,4 @@\n-import logo from \"./logo.svg\";\n-import \"./App.css\";\n-\n function App() {\n   return <div></div>;\n }\n \n"
+                },
+                {
+                    "date": 1632102575762,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,6 @@\n+import Hangman from \"./components/hangman\";\n+\n function App() {\n   return <div></div>;\n }\n \n"
+                },
+                {
+                    "date": 1632102581488,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,11 @@\n import Hangman from \"./components/hangman\";\n \n function App() {\n-  return <div></div>;\n+  return (\n+    <div>\n+      <Hangman />\n+    </div>\n+  );\n }\n \n export default App;\n"
+                },
+                {
+                    "date": 1632106823397,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,10 +1,12 @@\n-import Hangman from \"./components/hangman\";\n+import Hangman from \"./components/Hangman\";\n+import Wrong from \"./components/Wrong\";\n \n function App() {\n   return (\n     <div>\n       <Hangman />\n+      <Wrong />\n     </div>\n   );\n }\n \n"
+                },
+                {
+                    "date": 1632106829419,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,7 @@\n import Hangman from \"./components/Hangman\";\n import Wrong from \"./components/Wrong\";\n+import Wrong from \"./components/Word\";\n \n function App() {\n   return (\n     <div>\n"
+                },
+                {
+                    "date": 1632106836607,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n import Hangman from \"./components/Hangman\";\n import Wrong from \"./components/Wrong\";\n-import Wrong from \"./components/Word\";\n+import Word from \"./components/Word\";\n \n function App() {\n   return (\n     <div>\n"
+                },
+                {
+                    "date": 1632106841911,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,8 +6,9 @@\n   return (\n     <div>\n       <Hangman />\n       <Wrong />\n+      <Word />\n     </div>\n   );\n }\n \n"
+                },
+                {
+                    "date": 1632106932939,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,17 @@\n import Hangman from \"./components/Hangman\";\n import Wrong from \"./components/Wrong\";\n import Word from \"./components/Word\";\n \n+const words = [\n+  \"apple\",\n+  \"elephant\",\n+  \"argentina\",\n+  \"russia\",\n+  \"mexico\",\n+  \"watermelon\",\n+];\n+\n function App() {\n   return (\n     <div>\n       <Hangman />\n"
+                },
+                {
+                    "date": 1632106983403,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,5 @@\n+import React, {useState, useEffect}\n import Hangman from \"./components/Hangman\";\n import Wrong from \"./components/Wrong\";\n import Word from \"./components/Word\";\n \n"
+                },
+                {
+                    "date": 1632106989004,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import React, {useState, useEffect}\n+import React, { useState, useEffect } from \"react\";\n import Hangman from \"./components/Hangman\";\n import Wrong from \"./components/Wrong\";\n import Word from \"./components/Word\";\n \n"
+                },
+                {
+                    "date": 1632107032923,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,8 +11,10 @@\n   \"mexico\",\n   \"watermelon\",\n ];\n \n+let selectedWord = words[Math.floor(Math.random() * words.length)];\n+\n function App() {\n   return (\n     <div>\n       <Hangman />\n"
+                },
+                {
+                    "date": 1632107117681,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,11 +11,12 @@\n   \"mexico\",\n   \"watermelon\",\n ];\n \n-let selectedWord = words[Math.floor(Math.random() * words.length)];\n+let randomWord = words[Math.floor(Math.random() * words.length)];\n \n function App() {\n+  const []\n   return (\n     <div>\n       <Hangman />\n       <Wrong />\n"
+                },
+                {
+                    "date": 1632107148064,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,9 @@\n \n let randomWord = words[Math.floor(Math.random() * words.length)];\n \n function App() {\n-  const []\n+  const [playable, setPlayble] = useState(true);\n   return (\n     <div>\n       <Hangman />\n       <Wrong />\n"
+                },
+                {
+                    "date": 1632107153429,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,9 @@\n \n let randomWord = words[Math.floor(Math.random() * words.length)];\n \n function App() {\n-  const [playable, setPlayble] = useState(true);\n+  const [playable, setPlayable] = useState(true);\n   return (\n     <div>\n       <Hangman />\n       <Wrong />\n"
+                },
+                {
+                    "date": 1632107182914,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,8 +15,9 @@\n let randomWord = words[Math.floor(Math.random() * words.length)];\n \n function App() {\n   const [playable, setPlayable] = useState(true);\n+  const [correctLetters, setCorrectLetters] = useState([]);\n   return (\n     <div>\n       <Hangman />\n       <Wrong />\n"
+                },
+                {
+                    "date": 1632107200131,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,8 +16,9 @@\n \n function App() {\n   const [playable, setPlayable] = useState(true);\n   const [correctLetters, setCorrectLetters] = useState([]);\n+  const [wrongLetters, setWrongLetters] = useState([]);\n   return (\n     <div>\n       <Hangman />\n       <Wrong />\n"
+                },
+                {
+                    "date": 1632107477352,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n   return (\n     <div>\n       <Hangman />\n       <Wrong />\n-      <Word />\n+      <Word randomWord={randomWord} />\n     </div>\n   );\n }\n \n"
+                },
+                {
+                    "date": 1632107494585,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n   return (\n     <div>\n       <Hangman />\n       <Wrong />\n-      <Word randomWord={randomWord} />\n+      <Word randomWord={randomWord} correctLetters={correctLetters} />\n     </div>\n   );\n }\n \n"
+                },
+                {
+                    "date": 1632107824181,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,9 @@\n   const [playable, setPlayable] = useState(true);\n   const [correctLetters, setCorrectLetters] = useState([]);\n   const [wrongLetters, setWrongLetters] = useState([]);\n   return (\n-    <div>\n+    <div className=\"game-container\">\n       <Hangman />\n       <Wrong />\n       <Word randomWord={randomWord} correctLetters={correctLetters} />\n     </div>\n"
+                },
+                {
+                    "date": 1632108310056,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,9 +20,9 @@\n   const [wrongLetters, setWrongLetters] = useState([]);\n   return (\n     <div className=\"game-container\">\n       <Hangman />\n-      <Wrong />\n+      <Wrong wrongLetters={wrongLetters)/>\n       <Word randomWord={randomWord} correctLetters={correctLetters} />\n     </div>\n   );\n }\n"
+                },
+                {
+                    "date": 1632109008512,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,12 +17,38 @@\n function App() {\n   const [playable, setPlayable] = useState(true);\n   const [correctLetters, setCorrectLetters] = useState([]);\n   const [wrongLetters, setWrongLetters] = useState([]);\n+\n+  useEffect(() => {\n+    const handleKeydown = (event) => {\n+      const { key, keyCode } = event;\n+      if (playable && keyCode >= 65 && keyCode <= 90) {\n+        const letter = key.toLowerCase();\n+        if (selectedWord.includes(letter)) {\n+          if (!correctLetters.includes(letter)) {\n+            setCorrectLetters((currentLetters) => [...currentLetters, letter]);\n+          } else {\n+            show(setShowNotification);\n+          }\n+        } else {\n+          if (!wrongLetters.includes(letter)) {\n+            setWrongLetters((currentLetters) => [...currentLetters, letter]);\n+          } else {\n+            show(setShowNotification);\n+          }\n+        }\n+      }\n+    };\n+    window.addEventListener(\"keydown\", handleKeydown);\n+\n+    return () => window.removeEventListener(\"keydown\", handleKeydown);\n+  }, [correctLetters, wrongLetters, playable]);\n+\n   return (\n     <div className=\"game-container\">\n       <Hangman />\n-      <Wrong wrongLetters={wrongLetters)/>\n+      <Wrong wrongLetters={wrongLetters} />\n       <Word randomWord={randomWord} correctLetters={correctLetters} />\n     </div>\n   );\n }\n"
+                },
+                {
+                    "date": 1632109036607,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,9 +23,9 @@\n     const handleKeydown = (event) => {\n       const { key, keyCode } = event;\n       if (playable && keyCode >= 65 && keyCode <= 90) {\n         const letter = key.toLowerCase();\n-        if (selectedWord.includes(letter)) {\n+        if (randomWord.includes(letter)) {\n           if (!correctLetters.includes(letter)) {\n             setCorrectLetters((currentLetters) => [...currentLetters, letter]);\n           } else {\n             show(setShowNotification);\n"
+                },
+                {
+                    "date": 1632109043642,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,15 +27,15 @@\n         if (randomWord.includes(letter)) {\n           if (!correctLetters.includes(letter)) {\n             setCorrectLetters((currentLetters) => [...currentLetters, letter]);\n           } else {\n-            show(setShowNotification);\n+            // show(setShowNotification);\n           }\n         } else {\n           if (!wrongLetters.includes(letter)) {\n             setWrongLetters((currentLetters) => [...currentLetters, letter]);\n           } else {\n-            show(setShowNotification);\n+            // show(setShowNotification);\n           }\n         }\n       }\n     };\n"
+                },
+                {
+                    "date": 1632109108091,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,9 +45,9 @@\n   }, [correctLetters, wrongLetters, playable]);\n \n   return (\n     <div className=\"game-container\">\n-      <Hangman />\n+      <Hangman wrongLetters={wrongLetters} />\n       <Wrong wrongLetters={wrongLetters} />\n       <Word randomWord={randomWord} correctLetters={correctLetters} />\n     </div>\n   );\n"
+                }
+            ],
+            "date": 1632092256116,
+            "name": "Commit-0",
+            "content": "import logo from \"./logo.svg\";\nimport \"./App.css\";\n\nfunction App() {\n  return <div></div>;\n}\n\nexport default App;\n"
+        }
+    ]
+}

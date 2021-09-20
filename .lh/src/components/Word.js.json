@@ -1,0 +1,42 @@
+{
+    "sourceFile": "src/components/Word.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 6,
+            "patches": [
+                {
+                    "date": 1632106802930,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1632107250826,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n import React from \"react\";\r\n \r\n-export default function Word() {\r\n+export default function Word({ randomWord, correctLetters }) {\r\n   return <div></div>;\r\n }\r\n"
+                },
+                {
+                    "date": 1632107372682,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,15 @@\n import React from \"react\";\r\n \r\n export default function Word({ randomWord, correctLetters }) {\r\n-  return <div></div>;\r\n+  return (\r\n+    <div>\r\n+      {randomWord.split(\"\").map((element, index) => {\r\n+        return (\r\n+          <span key={index}>\r\n+            {correctLetters.includes(element) ? element : \"\"}\r\n+          </span>\r\n+        );\r\n+      })}\r\n+    </div>\r\n+  );\r\n }\r\n"
+                },
+                {
+                    "date": 1632107633692,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n import React from \"react\";\r\n \r\n export default function Word({ randomWord, correctLetters }) {\r\n   return (\r\n-    <div>\r\n+    <div className=\"word\">\r\n       {randomWord.split(\"\").map((element, index) => {\r\n         return (\r\n           <span key={index}>\r\n             {correctLetters.includes(element) ? element : \"\"}\r\n"
+                },
+                {
+                    "date": 1632107785033,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,7 +9,8 @@\n             {correctLetters.includes(element) ? element : \"\"}\r\n           </span>\r\n         );\r\n       })}\r\n+      word\r\n     </div>\r\n   );\r\n }\r\n"
+                },
+                {
+                    "date": 1632108014450,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n   return (\r\n     <div className=\"word\">\r\n       {randomWord.split(\"\").map((element, index) => {\r\n         return (\r\n-          <span key={index}>\r\n+          <span className=\"letter\" key={index}>\r\n             {correctLetters.includes(element) ? element : \"\"}\r\n           </span>\r\n         );\r\n       })}\r\n"
+                },
+                {
+                    "date": 1632109870156,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,8 +9,7 @@\n             {correctLetters.includes(element) ? element : \"\"}\r\n           </span>\r\n         );\r\n       })}\r\n-      word\r\n     </div>\r\n   );\r\n }\r\n"
+                }
+            ],
+            "date": 1632106802930,
+            "name": "Commit-0",
+            "content": "import React from \"react\";\r\n\r\nexport default function Word() {\r\n  return <div></div>;\r\n}\r\n"
+        }
+    ]
+}
