@@ -1,0 +1,26 @@
+{
+    "sourceFile": "src/components/Notifcation.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1632174624007,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1632178665890,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,11 @@\n import React from \"react\";\r\n \r\n-export default function Notifcation() {\r\n-  return <div></div>;\r\n-}\r\n+const Notification = ({ showNotification }) => {\r\n+  return (\r\n+    <div className={`notification-container ${showNotification ? \"show\" : \"\"}`}>\r\n+      <p>You have already entered this letter</p>\r\n+    </div>\r\n+  );\r\n+};\r\n+\r\n+export default Notification;\r\n"
+                },
+                {
+                    "date": 1632178694985,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,9 @@\n \r\n const Notification = ({ showNotification }) => {\r\n   return (\r\n     <div className={`notification-container ${showNotification ? \"show\" : \"\"}`}>\r\n-      <p>You have already entered this letter</p>\r\n+      <p>Type different letter</p>\r\n     </div>\r\n   );\r\n };\r\n \r\n"
+                }
+            ],
+            "date": 1632174624007,
+            "name": "Commit-0",
+            "content": "import React from \"react\";\r\n\r\nexport default function Notifcation() {\r\n  return <div></div>;\r\n}\r\n"
+        }
+    ]
+}

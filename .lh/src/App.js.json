@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 24,
+            "activePatchIndex": 100,
             "patches": [
                 {
                     "date": 1632092256116,
@@ -104,6 +104,310 @@
                 {
                     "date": 1632109108091,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,9 +45,9 @@\n   }, [correctLetters, wrongLetters, playable]);\n \n   return (\n     <div className=\"game-container\">\n-      <Hangman />\n+      <Hangman wrongLetters={wrongLetters} />\n       <Wrong wrongLetters={wrongLetters} />\n       <Word randomWord={randomWord} correctLetters={correctLetters} />\n     </div>\n   );\n"
+                },
+                {
+                    "date": 1632174360038,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,57 @@\n+import React, { useState, useEffect } from \"react\";\n+import Hangman from \"./components/Hangman\";\n+import Wrong from \"./components/Wrong\";\n+import Word from \"./components/Word\";\n+\n+const words = [\n+  \"apple\",\n+  \"elephant\",\n+  \"argentina\",\n+  \"russia\",\n+  \"mexico\",\n+  \"watermelon\",\n+];\n+\n+let randomWord = words[Math.floor(Math.random() * words.length)];\n+\n+function App() {\n+  const [playable, setPlayable] = useState(true);\n+  const [correctLetters, setCorrectLetters] = useState([]);\n+  const [wrongLetters, setWrongLetters] = useState([]);\n+  const [notification, setNotification] = useState(false);\n+\n+  useEffect(() => {\n+    const handleKeydown = (event) => {\n+      const { key, keyCode } = event;\n+      if (playable && keyCode >= 65 && keyCode <= 90) {\n+        const letter = key.toLowerCase();\n+        if (randomWord.includes(letter)) {\n+          if (!correctLetters.includes(letter)) {\n+            setCorrectLetters((currentLetters) => [...currentLetters, letter]);\n+          } else {\n+            // show(setShowNotification);\n+          }\n+        } else {\n+          if (!wrongLetters.includes(letter)) {\n+            setWrongLetters((currentLetters) => [...currentLetters, letter]);\n+          } else {\n+            // show(setShowNotification);\n+          }\n+        }\n+      }\n+    };\n+    window.addEventListener(\"keydown\", handleKeydown);\n+\n+    return () => window.removeEventListener(\"keydown\", handleKeydown);\n+  }, [correctLetters, wrongLetters, playable]);\n+\n+  return (\n+    <div className=\"game-container\">\n+      <Hangman wrongLetters={wrongLetters} />\n+      <Wrong wrongLetters={wrongLetters} />\n+      <Word randomWord={randomWord} correctLetters={correctLetters} />\n+    </div>\n+  );\n+}\n+\n+export default App;\n"
+                },
+                {
+                    "date": 1632174483267,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,8 +13,10 @@\n ];\n \n let randomWord = words[Math.floor(Math.random() * words.length)];\n \n+const showNotification = (setter) => {};\n+\n function App() {\n   const [playable, setPlayable] = useState(true);\n   const [correctLetters, setCorrectLetters] = useState([]);\n   const [wrongLetters, setWrongLetters] = useState([]);\n@@ -54,60 +56,4 @@\n   );\n }\n \n export default App;\n-import React, { useState, useEffect } from \"react\";\n-import Hangman from \"./components/Hangman\";\n-import Wrong from \"./components/Wrong\";\n-import Word from \"./components/Word\";\n-\n-const words = [\n-  \"apple\",\n-  \"elephant\",\n-  \"argentina\",\n-  \"russia\",\n-  \"mexico\",\n-  \"watermelon\",\n-];\n-\n-let randomWord = words[Math.floor(Math.random() * words.length)];\n-\n-function App() {\n-  const [playable, setPlayable] = useState(true);\n-  const [correctLetters, setCorrectLetters] = useState([]);\n-  const [wrongLetters, setWrongLetters] = useState([]);\n-\n-  useEffect(() => {\n-    const handleKeydown = (event) => {\n-      const { key, keyCode } = event;\n-      if (playable && keyCode >= 65 && keyCode <= 90) {\n-        const letter = key.toLowerCase();\n-        if (randomWord.includes(letter)) {\n-          if (!correctLetters.includes(letter)) {\n-            setCorrectLetters((currentLetters) => [...currentLetters, letter]);\n-          } else {\n-            // show(setShowNotification);\n-          }\n-        } else {\n-          if (!wrongLetters.includes(letter)) {\n-            setWrongLetters((currentLetters) => [...currentLetters, letter]);\n-          } else {\n-            // show(setShowNotification);\n-          }\n-        }\n-      }\n-    };\n-    window.addEventListener(\"keydown\", handleKeydown);\n-\n-    return () => window.removeEventListener(\"keydown\", handleKeydown);\n-  }, [correctLetters, wrongLetters, playable]);\n-\n-  return (\n-    <div className=\"game-container\">\n-      <Hangman wrongLetters={wrongLetters} />\n-      <Wrong wrongLetters={wrongLetters} />\n-      <Word randomWord={randomWord} correctLetters={correctLetters} />\n-    </div>\n-  );\n-}\n-\n-export default App;\n"
+                },
+                {
+                    "date": 1632174530987,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,9 +13,14 @@\n ];\n \n let randomWord = words[Math.floor(Math.random() * words.length)];\n \n-const showNotification = (setter) => {};\n+const showNotification = (setter) => {\n+  setter(true);\n+  setTimeout(() => {\n+    setter(false);\n+  }, 2000);\n+};\n \n function App() {\n   const [playable, setPlayable] = useState(true);\n   const [correctLetters, setCorrectLetters] = useState([]);\n"
+                },
+                {
+                    "date": 1632174554863,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -35,9 +35,9 @@\n         if (randomWord.includes(letter)) {\n           if (!correctLetters.includes(letter)) {\n             setCorrectLetters((currentLetters) => [...currentLetters, letter]);\n           } else {\n-            // show(setShowNotification);\n+            showNotification(setNotification);\n           }\n         } else {\n           if (!wrongLetters.includes(letter)) {\n             setWrongLetters((currentLetters) => [...currentLetters, letter]);\n"
+                },
+                {
+                    "date": 1632174563949,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -41,9 +41,9 @@\n         } else {\n           if (!wrongLetters.includes(letter)) {\n             setWrongLetters((currentLetters) => [...currentLetters, letter]);\n           } else {\n-            // show(setShowNotification);\n+            showNotification(setNotification);\n           }\n         }\n       }\n     };\n"
+                },
+                {
+                    "date": 1632178723828,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,8 +56,9 @@\n     <div className=\"game-container\">\n       <Hangman wrongLetters={wrongLetters} />\n       <Wrong wrongLetters={wrongLetters} />\n       <Word randomWord={randomWord} correctLetters={correctLetters} />\n+      <Notification showNotification={showNotification} />\n     </div>\n   );\n }\n \n"
+                },
+                {
+                    "date": 1632178737891,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,9 @@\n import React, { useState, useEffect } from \"react\";\n import Hangman from \"./components/Hangman\";\n import Wrong from \"./components/Wrong\";\n import Word from \"./components/Word\";\n+import Notification from \"./components/Notification\";\n \n const words = [\n   \"apple\",\n   \"elephant\",\n"
+                },
+                {
+                    "date": 1632178751248,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -57,9 +57,9 @@\n     <div className=\"game-container\">\n       <Hangman wrongLetters={wrongLetters} />\n       <Wrong wrongLetters={wrongLetters} />\n       <Word randomWord={randomWord} correctLetters={correctLetters} />\n-      <Notification showNotification={showNotification} />\n+      <Notification showNotification={Notification} />\n     </div>\n   );\n }\n \n"
+                },
+                {
+                    "date": 1632180375570,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -57,9 +57,9 @@\n     <div className=\"game-container\">\n       <Hangman wrongLetters={wrongLetters} />\n       <Wrong wrongLetters={wrongLetters} />\n       <Word randomWord={randomWord} correctLetters={correctLetters} />\n-      <Notification showNotification={Notification} />\n+      <Notification showNotification={notification} />\n     </div>\n   );\n }\n \n"
+                },
+                {
+                    "date": 1632180589717,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -53,14 +53,16 @@\n     return () => window.removeEventListener(\"keydown\", handleKeydown);\n   }, [correctLetters, wrongLetters, playable]);\n \n   return (\n-    <div className=\"game-container\">\n-      <Hangman wrongLetters={wrongLetters} />\n-      <Wrong wrongLetters={wrongLetters} />\n-      <Word randomWord={randomWord} correctLetters={correctLetters} />\n-      <Notification showNotification={notification} />\n-    </div>\n+    <>\n+      <div className=\"game-container\">\n+        <Hangman wrongLetters={wrongLetters} />\n+        <Wrong wrongLetters={wrongLetters} />\n+        <Word randomWord={randomWord} correctLetters={correctLetters} />\n+        <Notification showNotification={notification} />\n+      </div>\n+    </>\n   );\n }\n \n export default App;\n"
+                },
+                {
+                    "date": 1632180595599,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -58,10 +58,10 @@\n       <div className=\"game-container\">\n         <Hangman wrongLetters={wrongLetters} />\n         <Wrong wrongLetters={wrongLetters} />\n         <Word randomWord={randomWord} correctLetters={correctLetters} />\n-        <Notification showNotification={notification} />\n       </div>\n+      <Notification showNotification={notification} />\n     </>\n   );\n }\n \n"
+                },
+                {
+                    "date": 1632181308206,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -60,8 +60,15 @@\n         <Wrong wrongLetters={wrongLetters} />\n         <Word randomWord={randomWord} correctLetters={correctLetters} />\n       </div>\n       <Notification showNotification={notification} />\n+      <Popup\n+        correctLetters={correctLetters}\n+        wrongLetters={wrongLetters}\n+        selectedWord={selectedWord}\n+        setPlayable={setPlayable}\n+        playAgain={playAgain}\n+      />\n     </>\n   );\n }\n \n"
+                },
+                {
+                    "date": 1632181318704,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,8 +2,9 @@\n import Hangman from \"./components/Hangman\";\n import Wrong from \"./components/Wrong\";\n import Word from \"./components/Word\";\n import Notification from \"./components/Notification\";\n+import Popup from \"./components/Popup\";\n \n const words = [\n   \"apple\",\n   \"elephant\",\n"
+                },
+                {
+                    "date": 1632181336811,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -64,9 +64,9 @@\n       <Notification showNotification={notification} />\n       <Popup\n         correctLetters={correctLetters}\n         wrongLetters={wrongLetters}\n-        selectedWord={selectedWord}\n+        selectedWord={randomWord}\n         setPlayable={setPlayable}\n         playAgain={playAgain}\n       />\n     </>\n"
+                },
+                {
+                    "date": 1632181382091,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -53,8 +53,19 @@\n \n     return () => window.removeEventListener(\"keydown\", handleKeydown);\n   }, [correctLetters, wrongLetters, playable]);\n \n+  function playAgain() {\n+    setPlayable(true);\n+\n+    // Empty Arrays\n+    setCorrectLetters([]);\n+    setWrongLetters([]);\n+\n+    const random = Math.floor(Math.random() * words.length);\n+    selectedWord = words[random];\n+  }\n+\n   return (\n     <>\n       <div className=\"game-container\">\n         <Hangman wrongLetters={wrongLetters} />\n"
+                },
+                {
+                    "date": 1632181401453,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -61,9 +61,9 @@\n     setCorrectLetters([]);\n     setWrongLetters([]);\n \n     const random = Math.floor(Math.random() * words.length);\n-    selectedWord = words[random];\n+    randomWord = words[random];\n   }\n \n   return (\n     <>\n"
+                },
+                {
+                    "date": 1632185680884,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,19 +4,8 @@\n import Word from \"./components/Word\";\n import Notification from \"./components/Notification\";\n import Popup from \"./components/Popup\";\n \n-const words = [\n-  \"apple\",\n-  \"elephant\",\n-  \"argentina\",\n-  \"russia\",\n-  \"mexico\",\n-  \"watermelon\",\n-];\n-\n-let randomWord = words[Math.floor(Math.random() * words.length)];\n-\n const showNotification = (setter) => {\n   setter(true);\n   setTimeout(() => {\n     setter(false);\n@@ -28,8 +17,19 @@\n   const [correctLetters, setCorrectLetters] = useState([]);\n   const [wrongLetters, setWrongLetters] = useState([]);\n   const [notification, setNotification] = useState(false);\n \n+  const words = [\n+    \"apple\",\n+    \"elephant\",\n+    \"argentina\",\n+    \"russia\",\n+    \"mexico\",\n+    \"watermelon\",\n+  ];\n+\n+  let randomWord = words[Math.floor(Math.random() * words.length)];\n+\n   useEffect(() => {\n     const handleKeydown = (event) => {\n       const { key, keyCode } = event;\n       if (playable && keyCode >= 65 && keyCode <= 90) {\n"
+                },
+                {
+                    "date": 1632185952284,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,8 +3,9 @@\n import Wrong from \"./components/Wrong\";\n import Word from \"./components/Word\";\n import Notification from \"./components/Notification\";\n import Popup from \"./components/Popup\";\n+import Axios from \"axios\";\n \n const showNotification = (setter) => {\n   setter(true);\n   setTimeout(() => {\n"
+                },
+                {
+                    "date": 1632185981341,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,8 +18,10 @@\n   const [correctLetters, setCorrectLetters] = useState([]);\n   const [wrongLetters, setWrongLetters] = useState([]);\n   const [notification, setNotification] = useState(false);\n \n+  const getCountries = () => {};\n+\n   const words = [\n     \"apple\",\n     \"elephant\",\n     \"argentina\",\n"
+                },
+                {
+                    "date": 1632186122841,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,22 @@\n   const [correctLetters, setCorrectLetters] = useState([]);\n   const [wrongLetters, setWrongLetters] = useState([]);\n   const [notification, setNotification] = useState(false);\n \n-  const getCountries = () => {};\n+  const getCountries = () => {\n+    Axios.get(\"/user?ID=12345\")\n+      .then(function (response) {\n+        // handle success\n+        console.log(response);\n+      })\n+      .catch(function (error) {\n+        // handle error\n+        console.log(error);\n+      })\n+      .then(function () {\n+        // always executed\n+      });\n+  };\n \n   const words = [\n     \"apple\",\n     \"elephant\",\n"
+                },
+                {
+                    "date": 1632186132008,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n   const [wrongLetters, setWrongLetters] = useState([]);\n   const [notification, setNotification] = useState(false);\n \n   const getCountries = () => {\n-    Axios.get(\"/user?ID=12345\")\n+    Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n         // handle success\n         console.log(response);\n       })\n"
+                },
+                {
+                    "date": 1632186141422,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,18 +21,14 @@\n \n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n-        // handle success\n         console.log(response);\n       })\n       .catch(function (error) {\n-        // handle error\n         console.log(error);\n       })\n-      .then(function () {\n-        // always executed\n-      });\n+      .then(function () {});\n   };\n \n   const words = [\n     \"apple\",\n"
+                },
+                {
+                    "date": 1632186149175,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -28,8 +28,9 @@\n         console.log(error);\n       })\n       .then(function () {});\n   };\n+  getCountries();\n \n   const words = [\n     \"apple\",\n     \"elephant\",\n"
+                },
+                {
+                    "date": 1632186172182,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,8 +17,9 @@\n   const [playable, setPlayable] = useState(true);\n   const [correctLetters, setCorrectLetters] = useState([]);\n   const [wrongLetters, setWrongLetters] = useState([]);\n   const [notification, setNotification] = useState(false);\n+  const [countries, setCountries] = useState([]);\n \n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n"
+                },
+                {
+                    "date": 1632186200275,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,8 +22,9 @@\n \n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n+        setCountries(countries[response]);\n         console.log(response);\n       })\n       .catch(function (error) {\n         console.log(error);\n"
+                },
+                {
+                    "date": 1632186219302,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,8 +31,9 @@\n       })\n       .then(function () {});\n   };\n   getCountries();\n+  console.log(countries);\n \n   const words = [\n     \"apple\",\n     \"elephant\",\n"
+                },
+                {
+                    "date": 1632186267199,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n \n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n-        setCountries(countries[response]);\n+        setCountries(response);\n         console.log(response);\n       })\n       .catch(function (error) {\n         console.log(error);\n"
+                },
+                {
+                    "date": 1632186282832,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,9 +23,8 @@\n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n         setCountries(response);\n-        console.log(response);\n       })\n       .catch(function (error) {\n         console.log(error);\n       })\n"
+                },
+                {
+                    "date": 1632186328326,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,16 +22,23 @@\n \n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n-        setCountries(response);\n+        setCountries(response.data);\n       })\n       .catch(function (error) {\n         console.log(error);\n       })\n       .then(function () {});\n   };\n-  getCountries();\n+\n+  useEffect(() => {\n+    getCountries();\n+    return () => {\n+      cleanup;\n+    };\n+  }, []);\n+\n   console.log(countries);\n \n   const words = [\n     \"apple\",\n"
+                },
+                {
+                    "date": 1632186334100,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,11 +32,8 @@\n   };\n \n   useEffect(() => {\n     getCountries();\n-    return () => {\n-      cleanup;\n-    };\n   }, []);\n \n   console.log(countries);\n \n"
+                },
+                {
+                    "date": 1632186361071,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,22 +19,22 @@\n   const [wrongLetters, setWrongLetters] = useState([]);\n   const [notification, setNotification] = useState(false);\n   const [countries, setCountries] = useState([]);\n \n-  const getCountries = () => {\n-    Axios.get(\"https://restcountries.eu/rest/v2/all\")\n-      .then(function (response) {\n-        setCountries(response.data);\n-      })\n-      .catch(function (error) {\n-        console.log(error);\n-      })\n-      .then(function () {});\n-  };\n+  // const getCountries = () => {\n+  //   Axios.get(\"https://restcountries.eu/rest/v2/all\")\n+  //     .then(function (response) {\n+  //       setCountries(response.data);\n+  //     })\n+  //     .catch(function (error) {\n+  //       console.log(error);\n+  //     })\n+  //     .then(function () {});\n+  // };\n \n-  useEffect(() => {\n-    getCountries();\n-  }, []);\n+  // useEffect(() => {\n+  //   getCountries();\n+  // }, []);\n \n   console.log(countries);\n \n   const words = [\n"
+                },
+                {
+                    "date": 1632186399364,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,23 +19,8 @@\n   const [wrongLetters, setWrongLetters] = useState([]);\n   const [notification, setNotification] = useState(false);\n   const [countries, setCountries] = useState([]);\n \n-  // const getCountries = () => {\n-  //   Axios.get(\"https://restcountries.eu/rest/v2/all\")\n-  //     .then(function (response) {\n-  //       setCountries(response.data);\n-  //     })\n-  //     .catch(function (error) {\n-  //       console.log(error);\n-  //     })\n-  //     .then(function () {});\n-  // };\n-\n-  // useEffect(() => {\n-  //   getCountries();\n-  // }, []);\n-\n   console.log(countries);\n \n   const words = [\n     \"apple\",\n@@ -72,8 +57,23 @@\n \n     return () => window.removeEventListener(\"keydown\", handleKeydown);\n   }, [correctLetters, wrongLetters, playable]);\n \n+  // const getCountries = () => {\n+  //   Axios.get(\"https://restcountries.eu/rest/v2/all\")\n+  //     .then(function (response) {\n+  //       setCountries(response.data);\n+  //     })\n+  //     .catch(function (error) {\n+  //       console.log(error);\n+  //     })\n+  //     .then(function () {});\n+  // };\n+\n+  // useEffect(() => {\n+  //   getCountries();\n+  // }, []);\n+\n   function playAgain() {\n     setPlayable(true);\n \n     // Empty Arrays\n"
+                },
+                {
+                    "date": 1632186432322,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -30,8 +30,23 @@\n     \"mexico\",\n     \"watermelon\",\n   ];\n \n+  const getCountries = () => {\n+    Axios.get(\"https://restcountries.eu/rest/v2/all\")\n+      .then(function (response) {\n+        setCountries(response.data);\n+      })\n+      .catch(function (error) {\n+        console.log(error);\n+      })\n+      .then(function () {});\n+  };\n+\n+  useEffect(() => {\n+    getCountries();\n+  }, []);\n+\n   let randomWord = words[Math.floor(Math.random() * words.length)];\n \n   useEffect(() => {\n     const handleKeydown = (event) => {\n@@ -57,23 +72,8 @@\n \n     return () => window.removeEventListener(\"keydown\", handleKeydown);\n   }, [correctLetters, wrongLetters, playable]);\n \n-  // const getCountries = () => {\n-  //   Axios.get(\"https://restcountries.eu/rest/v2/all\")\n-  //     .then(function (response) {\n-  //       setCountries(response.data);\n-  //     })\n-  //     .catch(function (error) {\n-  //       console.log(error);\n-  //     })\n-  //     .then(function () {});\n-  // };\n-\n-  // useEffect(() => {\n-  //   getCountries();\n-  // }, []);\n-\n   function playAgain() {\n     setPlayable(true);\n \n     // Empty Arrays\n"
+                },
+                {
+                    "date": 1632186458671,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,8 +45,10 @@\n   useEffect(() => {\n     getCountries();\n   }, []);\n \n+  console.log(countries);\n+\n   let randomWord = words[Math.floor(Math.random() * words.length)];\n \n   useEffect(() => {\n     const handleKeydown = (event) => {\n"
+                },
+                {
+                    "date": 1632186850516,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,8 +45,13 @@\n   useEffect(() => {\n     getCountries();\n   }, []);\n \n+  let countriesList;\n+  countries.map((country) => {\n+    countriesList = country.name;\n+  });\n+\n   console.log(countries);\n \n   let randomWord = words[Math.floor(Math.random() * words.length)];\n \n"
+                },
+                {
+                    "date": 1632186857518,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -50,9 +50,9 @@\n   countries.map((country) => {\n     countriesList = country.name;\n   });\n \n-  console.log(countries);\n+  console.log(countriesList);\n \n   let randomWord = words[Math.floor(Math.random() * words.length)];\n \n   useEffect(() => {\n"
+                },
+                {
+                    "date": 1632186880195,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -47,9 +47,10 @@\n   }, []);\n \n   let countriesList;\n   countries.map((country) => {\n-    countriesList = country.name;\n+    return (countriesList = country.name;\n+    \n   });\n \n   console.log(countriesList);\n \n"
+                },
+                {
+                    "date": 1632187048822,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,12 +45,11 @@\n   useEffect(() => {\n     getCountries();\n   }, []);\n \n-  let countriesList;\n+  let countriesList = [];\n   countries.map((country) => {\n-    return (countriesList = country.name;\n-    \n+    return (countriesList = country.name);\n   });\n \n   console.log(countriesList);\n \n"
+                },
+                {
+                    "date": 1632187121888,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -46,10 +46,10 @@\n     getCountries();\n   }, []);\n \n   let countriesList = [];\n-  countries.map((country) => {\n-    return (countriesList = country.name);\n+  countries.forEach((country) => {\n+    return (countriesList = [...country.name]);\n   });\n \n   console.log(countriesList);\n \n"
+                },
+                {
+                    "date": 1632187155757,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n   const [wrongLetters, setWrongLetters] = useState([]);\n   const [notification, setNotification] = useState(false);\n   const [countries, setCountries] = useState([]);\n \n-  console.log(countries);\n+  // console.log(countries);\n \n   const words = [\n     \"apple\",\n     \"elephant\",\n"
+                },
+                {
+                    "date": 1632187181773,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -47,9 +47,9 @@\n   }, []);\n \n   let countriesList = [];\n   countries.forEach((country) => {\n-    return (countriesList = [...country.name]);\n+    return (countriesList = [country.name]);\n   });\n \n   console.log(countriesList);\n \n"
+                },
+                {
+                    "date": 1632187228614,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -47,8 +47,9 @@\n   }, []);\n \n   let countriesList = [];\n   countries.forEach((country) => {\n+    console.log(country.name);\n     return (countriesList = [country.name]);\n   });\n \n   console.log(countriesList);\n"
+                },
+                {
+                    "date": 1632187259903,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -48,9 +48,9 @@\n \n   let countriesList = [];\n   countries.forEach((country) => {\n     console.log(country.name);\n-    return (countriesList = [country.name]);\n+    return (countriesList = country.name);\n   });\n \n   console.log(countriesList);\n \n"
+                },
+                {
+                    "date": 1632187273678,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -47,9 +47,9 @@\n   }, []);\n \n   let countriesList = [];\n   countries.forEach((country) => {\n-    console.log(country.name);\n+    // console.log(country.name);\n     return (countriesList = country.name);\n   });\n \n   console.log(countriesList);\n"
+                },
+                {
+                    "date": 1632188786375,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,9 +33,9 @@\n \n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n-        setCountries(response.data);\n+        setCountries(response.data.name);\n       })\n       .catch(function (error) {\n         console.log(error);\n       })\n"
+                },
+                {
+                    "date": 1632188830157,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,15 +45,15 @@\n   useEffect(() => {\n     getCountries();\n   }, []);\n \n-  let countriesList = [];\n-  countries.forEach((country) => {\n-    // console.log(country.name);\n-    return (countriesList = country.name);\n-  });\n+  // let countriesList = [];\n+  // countries.forEach((country) => {\n+  //   // console.log(country.name);\n+  //   return (countriesList = country.name);\n+  // });\n \n-  console.log(countriesList);\n+  // console.log(countriesList);\n \n   let randomWord = words[Math.floor(Math.random() * words.length)];\n \n   useEffect(() => {\n"
+                },
+                {
+                    "date": 1632188847537,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,8 +33,9 @@\n \n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n+        console.log(response.data.name);\n         setCountries(response.data.name);\n       })\n       .catch(function (error) {\n         console.log(error);\n"
+                },
+                {
+                    "date": 1632188855465,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,10 +33,9 @@\n \n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n-        console.log(response.data.name);\n-        setCountries(response.data.name);\n+        setCountries(response.data);\n       })\n       .catch(function (error) {\n         console.log(error);\n       })\n@@ -46,15 +45,15 @@\n   useEffect(() => {\n     getCountries();\n   }, []);\n \n-  // let countriesList = [];\n-  // countries.forEach((country) => {\n-  //   // console.log(country.name);\n-  //   return (countriesList = country.name);\n-  // });\n+  let countriesList = [];\n+  countries.forEach((country) => {\n+    // console.log(country.name);\n+    return (countriesList = country.name);\n+  });\n \n-  // console.log(countriesList);\n+  console.log(countriesList);\n \n   let randomWord = words[Math.floor(Math.random() * words.length)];\n \n   useEffect(() => {\n"
+                },
+                {
+                    "date": 1632188865908,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,8 +18,9 @@\n   const [correctLetters, setCorrectLetters] = useState([]);\n   const [wrongLetters, setWrongLetters] = useState([]);\n   const [notification, setNotification] = useState(false);\n   const [countries, setCountries] = useState([]);\n+  const [countriesList, setCountriesList] = useState([]);\n \n   // console.log(countries);\n \n   const words = [\n"
+                },
+                {
+                    "date": 1632188897337,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -46,12 +46,11 @@\n   useEffect(() => {\n     getCountries();\n   }, []);\n \n-  let countriesList = [];\n   countries.forEach((country) => {\n     // console.log(country.name);\n-    return (countriesList = country.name);\n+    return setCountriesList(country.name);\n   });\n \n   console.log(countriesList);\n \n"
+                },
+                {
+                    "date": 1632188922219,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -48,9 +48,9 @@\n   }, []);\n \n   countries.forEach((country) => {\n     // console.log(country.name);\n-    return setCountriesList(country.name);\n+    return setCountriesList([country.name]);\n   });\n \n   console.log(countriesList);\n \n"
+                },
+                {
+                    "date": 1632188944112,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -48,9 +48,9 @@\n   }, []);\n \n   countries.forEach((country) => {\n     // console.log(country.name);\n-    return setCountriesList([country.name]);\n+    return setCountriesList([...country.name]);\n   });\n \n   console.log(countriesList);\n \n"
+                },
+                {
+                    "date": 1632189278206,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -46,8 +46,9 @@\n   useEffect(() => {\n     getCountries();\n   }, []);\n \n+  let countriesList1 = countries.map((country) => country.name);\n   countries.forEach((country) => {\n     // console.log(country.name);\n     return setCountriesList([...country.name]);\n   });\n"
+                },
+                {
+                    "date": 1632189286274,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -47,14 +47,10 @@\n     getCountries();\n   }, []);\n \n   let countriesList1 = countries.map((country) => country.name);\n-  countries.forEach((country) => {\n-    // console.log(country.name);\n-    return setCountriesList([...country.name]);\n-  });\n \n-  console.log(countriesList);\n+  console.log(countriesList1);\n \n   let randomWord = words[Math.floor(Math.random() * words.length)];\n \n   useEffect(() => {\n"
+                },
+                {
+                    "date": 1632189310257,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,8 @@\n   const [correctLetters, setCorrectLetters] = useState([]);\n   const [wrongLetters, setWrongLetters] = useState([]);\n   const [notification, setNotification] = useState(false);\n   const [countries, setCountries] = useState([]);\n-  const [countriesList, setCountriesList] = useState([]);\n \n   // console.log(countries);\n \n   const words = [\n"
+                },
+                {
+                    "date": 1632189327486,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,10 +19,8 @@\n   const [wrongLetters, setWrongLetters] = useState([]);\n   const [notification, setNotification] = useState(false);\n   const [countries, setCountries] = useState([]);\n \n-  // console.log(countries);\n-\n   const words = [\n     \"apple\",\n     \"elephant\",\n     \"argentina\",\n@@ -45,12 +43,10 @@\n   useEffect(() => {\n     getCountries();\n   }, []);\n \n-  let countriesList1 = countries.map((country) => country.name);\n+  let countriesList = countries.map((country) => country.name);\n \n-  console.log(countriesList1);\n-\n   let randomWord = words[Math.floor(Math.random() * words.length)];\n \n   useEffect(() => {\n     const handleKeydown = (event) => {\n"
+                },
+                {
+                    "date": 1632189357447,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -45,9 +45,10 @@\n   }, []);\n \n   let countriesList = countries.map((country) => country.name);\n \n-  let randomWord = words[Math.floor(Math.random() * words.length)];\n+  let randomWord =\n+    countriesList[Math.floor(Math.random() * countriesList.length)];\n \n   useEffect(() => {\n     const handleKeydown = (event) => {\n       const { key, keyCode } = event;\n@@ -79,10 +80,10 @@\n     // Empty Arrays\n     setCorrectLetters([]);\n     setWrongLetters([]);\n \n-    const random = Math.floor(Math.random() * words.length);\n-    randomWord = words[random];\n+    const random = Math.floor(Math.random() * countriesList.length);\n+    randomWord = countriesList[random];\n   }\n \n   return (\n     <>\n"
+                },
+                {
+                    "date": 1632189449674,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,8 +31,9 @@\n \n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n+        let countriesList = countries.map((country) => country.name);\n         setCountries(response.data);\n       })\n       .catch(function (error) {\n         console.log(error);\n@@ -43,10 +44,8 @@\n   useEffect(() => {\n     getCountries();\n   }, []);\n \n-  let countriesList = countries.map((country) => country.name);\n-\n   let randomWord =\n     countriesList[Math.floor(Math.random() * countriesList.length)];\n \n   useEffect(() => {\n"
+                },
+                {
+                    "date": 1632189465795,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,13 +27,13 @@\n     \"russia\",\n     \"mexico\",\n     \"watermelon\",\n   ];\n-\n+  let countriesList;\n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n-        let countriesList = countries.map((country) => country.name);\n+        countriesList = countries.map((country) => country.name);\n         setCountries(response.data);\n       })\n       .catch(function (error) {\n         console.log(error);\n"
+                },
+                {
+                    "date": 1632189474263,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,9 +27,9 @@\n     \"russia\",\n     \"mexico\",\n     \"watermelon\",\n   ];\n-  let countriesList;\n+  let countriesList = [];\n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n         countriesList = countries.map((country) => country.name);\n"
+                },
+                {
+                    "date": 1632189490497,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,13 +27,12 @@\n     \"russia\",\n     \"mexico\",\n     \"watermelon\",\n   ];\n-  let countriesList = [];\n+\n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n-        countriesList = countries.map((country) => country.name);\n         setCountries(response.data);\n       })\n       .catch(function (error) {\n         console.log(error);\n@@ -44,11 +43,12 @@\n   useEffect(() => {\n     getCountries();\n   }, []);\n \n-  let randomWord =\n-    countriesList[Math.floor(Math.random() * countriesList.length)];\n+  let countriesList = countries.map((country) => country.name);\n \n+  let randomWord = words[Math.floor(Math.random() * words.length)];\n+\n   useEffect(() => {\n     const handleKeydown = (event) => {\n       const { key, keyCode } = event;\n       if (playable && keyCode >= 65 && keyCode <= 90) {\n@@ -79,10 +79,10 @@\n     // Empty Arrays\n     setCorrectLetters([]);\n     setWrongLetters([]);\n \n-    const random = Math.floor(Math.random() * countriesList.length);\n-    randomWord = countriesList[random];\n+    const random = Math.floor(Math.random() * words.length);\n+    randomWord = words[random];\n   }\n \n   return (\n     <>\n"
+                },
+                {
+                    "date": 1632189599967,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,17 +19,8 @@\n   const [wrongLetters, setWrongLetters] = useState([]);\n   const [notification, setNotification] = useState(false);\n   const [countries, setCountries] = useState([]);\n \n-  const words = [\n-    \"apple\",\n-    \"elephant\",\n-    \"argentina\",\n-    \"russia\",\n-    \"mexico\",\n-    \"watermelon\",\n-  ];\n-\n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n         setCountries(response.data);\n@@ -45,8 +36,17 @@\n   }, []);\n \n   let countriesList = countries.map((country) => country.name);\n \n+  const words = [\n+    \"apple\",\n+    \"elephant\",\n+    \"argentina\",\n+    \"russia\",\n+    \"mexico\",\n+    \"watermelon\",\n+  ];\n+\n   let randomWord = words[Math.floor(Math.random() * words.length)];\n \n   useEffect(() => {\n     const handleKeydown = (event) => {\n"
+                },
+                {
+                    "date": 1632189618448,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -36,16 +36,9 @@\n   }, []);\n \n   let countriesList = countries.map((country) => country.name);\n \n-  const words = [\n-    \"apple\",\n-    \"elephant\",\n-    \"argentina\",\n-    \"russia\",\n-    \"mexico\",\n-    \"watermelon\",\n-  ];\n+  const words = [...countriesList];\n \n   let randomWord = words[Math.floor(Math.random() * words.length)];\n \n   useEffect(() => {\n"
+                },
+                {
+                    "date": 1632189734475,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n \n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n-        setCountries(response.data);\n+        setCountries(response.data.map((country) => country.name));\n       })\n       .catch(function (error) {\n         console.log(error);\n       })\n"
+                },
+                {
+                    "date": 1632189750000,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -34,8 +34,10 @@\n   useEffect(() => {\n     getCountries();\n   }, []);\n \n+  console.log(countries);\n+\n   let countriesList = countries.map((country) => country.name);\n \n   const words = [...countriesList];\n \n"
+                },
+                {
+                    "date": 1632189784224,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n \n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n-        setCountries(response.data.map((country) => country.name));\n+        setCountries(response.data);\n       })\n       .catch(function (error) {\n         console.log(error);\n       })\n@@ -34,13 +34,18 @@\n   useEffect(() => {\n     getCountries();\n   }, []);\n \n-  console.log(countries);\n-\n   let countriesList = countries.map((country) => country.name);\n \n-  const words = [...countriesList];\n+  const words = [\n+    \"apple\",\n+    \"elephant\",\n+    \"argentina\",\n+    \"russia\",\n+    \"mexico\",\n+    \"watermelon\",\n+  ];\n \n   let randomWord = words[Math.floor(Math.random() * words.length)];\n \n   useEffect(() => {\n"
+                },
+                {
+                    "date": 1632189798304,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n \n   const getCountries = () => {\n     Axios.get(\"https://restcountries.eu/rest/v2/all\")\n       .then(function (response) {\n-        setCountries(response.data);\n+        setCountries(response.data.map((country) => country.name));\n       })\n       .catch(function (error) {\n         console.log(error);\n       })\n"
+                },
+                {
+                    "date": 1632189814137,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -34,8 +34,10 @@\n   useEffect(() => {\n     getCountries();\n   }, []);\n \n+  console.log(countries);\n+\n   let countriesList = countries.map((country) => country.name);\n \n   const words = [\n     \"apple\",\n"
+                },
+                {
+                    "date": 1632189848787,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -46,8 +46,9 @@\n     \"russia\",\n     \"mexico\",\n     \"watermelon\",\n   ];\n+  const words = [...countries];\n \n   let randomWord = words[Math.floor(Math.random() * words.length)];\n \n   useEffect(() => {\n"
+                },
+                {
+                    "date": 1632189855339,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -38,16 +38,8 @@\n   console.log(countries);\n \n   let countriesList = countries.map((country) => country.name);\n \n-  const words = [\n-    \"apple\",\n-    \"elephant\",\n-    \"argentina\",\n-    \"russia\",\n-    \"mexico\",\n-    \"watermelon\",\n-  ];\n   const words = [...countries];\n \n   let randomWord = words[Math.floor(Math.random() * words.length)];\n \n"
+                },
+                {
+                    "date": 1632189901663,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,14 +32,12 @@\n   };\n \n   useEffect(() => {\n     getCountries();\n-  }, []);\n+  }, [playable]);\n \n   console.log(countries);\n \n-  let countriesList = countries.map((country) => country.name);\n-\n   const words = [...countries];\n \n   let randomWord = words[Math.floor(Math.random() * words.length)];\n \n"
+                },
+                {
+                    "date": 1632190033700,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -84,15 +84,15 @@\n         <Wrong wrongLetters={wrongLetters} />\n         <Word randomWord={randomWord} correctLetters={correctLetters} />\n       </div>\n       <Notification showNotification={notification} />\n-      <Popup\n+      {/* <Popup\n         correctLetters={correctLetters}\n         wrongLetters={wrongLetters}\n         selectedWord={randomWord}\n         setPlayable={setPlayable}\n         playAgain={playAgain}\n-      />\n+      /> */}\n     </>\n   );\n }\n \n"
+                },
+                {
+                    "date": 1632190062273,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -84,15 +84,15 @@\n         <Wrong wrongLetters={wrongLetters} />\n         <Word randomWord={randomWord} correctLetters={correctLetters} />\n       </div>\n       <Notification showNotification={notification} />\n-      {/* <Popup\n+      <Popup\n         correctLetters={correctLetters}\n         wrongLetters={wrongLetters}\n         selectedWord={randomWord}\n         setPlayable={setPlayable}\n         playAgain={playAgain}\n-      /> */}\n+      />\n     </>\n   );\n }\n \n"
+                },
+                {
+                    "date": 1632190109707,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,29 +17,18 @@\n   const [playable, setPlayable] = useState(true);\n   const [correctLetters, setCorrectLetters] = useState([]);\n   const [wrongLetters, setWrongLetters] = useState([]);\n   const [notification, setNotification] = useState(false);\n-  const [countries, setCountries] = useState([]);\n \n-  const getCountries = () => {\n-    Axios.get(\"https://restcountries.eu/rest/v2/all\")\n-      .then(function (response) {\n-        setCountries(response.data.map((country) => country.name));\n-      })\n-      .catch(function (error) {\n-        console.log(error);\n-      })\n-      .then(function () {});\n-  };\n+  const words = [\n+    \"apple\",\n+    \"elephant\",\n+    \"argentina\",\n+    \"russia\",\n+    \"mexico\",\n+    \"watermelon\",\n+  ];\n \n-  useEffect(() => {\n-    getCountries();\n-  }, [playable]);\n-\n-  console.log(countries);\n-\n-  const words = [...countries];\n-\n   let randomWord = words[Math.floor(Math.random() * words.length)];\n \n   useEffect(() => {\n     const handleKeydown = (event) => {\n"
+                },
+                {
+                    "date": 1632190234600,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,10 +3,20 @@\n import Wrong from \"./components/Wrong\";\n import Word from \"./components/Word\";\n import Notification from \"./components/Notification\";\n import Popup from \"./components/Popup\";\n-import Axios from \"axios\";\n \n+const words = [\n+  \"apple\",\n+  \"elephant\",\n+  \"argentina\",\n+  \"russia\",\n+  \"mexico\",\n+  \"watermelon\",\n+];\n+\n+let randomWord = words[Math.floor(Math.random() * words.length)];\n+\n const showNotification = (setter) => {\n   setter(true);\n   setTimeout(() => {\n     setter(false);\n@@ -18,19 +28,8 @@\n   const [correctLetters, setCorrectLetters] = useState([]);\n   const [wrongLetters, setWrongLetters] = useState([]);\n   const [notification, setNotification] = useState(false);\n \n-  const words = [\n-    \"apple\",\n-    \"elephant\",\n-    \"argentina\",\n-    \"russia\",\n-    \"mexico\",\n-    \"watermelon\",\n-  ];\n-\n-  let randomWord = words[Math.floor(Math.random() * words.length)];\n-\n   useEffect(() => {\n     const handleKeydown = (event) => {\n       const { key, keyCode } = event;\n       if (playable && keyCode >= 65 && keyCode <= 90) {\n"
+                },
+                {
+                    "date": 1632210734785,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,9 +56,8 @@\n \n   function playAgain() {\n     setPlayable(true);\n \n-    // Empty Arrays\n     setCorrectLetters([]);\n     setWrongLetters([]);\n \n     const random = Math.floor(Math.random() * words.length);\n"
                 }
             ],
             "date": 1632092256116,
